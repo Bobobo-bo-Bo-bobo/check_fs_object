@@ -40,12 +40,14 @@ pub fn show_usage() {
                         f - file
                         l - symbolic link
                         s - socket
+
     -f              Follow symbolic link
     --follow
 
 Example:
     Check if /tmp and /var/tmp are a directory and has mode 1777
         {} --type=d --mode=1777 /tmp /var/tmp
+
 ", constants::NAME, constants::NAME);
 }
 
