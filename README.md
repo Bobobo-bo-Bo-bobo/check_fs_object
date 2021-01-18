@@ -1,3 +1,7 @@
+**_Note:_** Because I'm running my own servers for several years, main development is done at at https://git.ypbind.de/cgit/check_fs_object/
+
+----
+
 # Preface
 `check_fs_object` is a Nagios check to check for the type and mode of a filesystem object
 
