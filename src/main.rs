@@ -1,5 +1,6 @@
 mod check;
 mod constants;
+mod fsobj;
 mod metadata;
 mod usage;
 
@@ -15,7 +16,11 @@ fn main() {
 
     options.optflag("h", "help", "Show help");
     options.optflag("f", "follow", "Follow symbolic link");
-    options.optflag("C", "critical", "If type/mode doesn't match, report critical state");
+    options.optflag(
+        "C",
+        "critical",
+        "If type/mode doesn't match, report critical state",
+    );
     options.optflag("V", "version", "Show version");
     options.optopt("t", "type", "", "Type");
     options.optopt("m", "mode", "", "Mode");
@@ -47,13 +52,11 @@ fn main() {
     };
 
     let mode: i32 = match opts.opt_str("m") {
-        Some(v) => {
-            match i32::from_str_radix(&v, 8) {
-                Ok(vv) => vv,
-                Err(e) => {
-                    eprintln!("Error: Can't convert {} to an integer: {}", v, e);
-                    std::process::exit(constants::STATUS_UNKNOWN);
-                }
+        Some(v) => match i32::from_str_radix(&v, 8) {
+            Ok(vv) => vv,
+            Err(e) => {
+                eprintln!("Error: Can't convert {} to an integer: {}", v, e);
+                std::process::exit(constants::STATUS_UNKNOWN);
             }
         },
         None => -1,
@@ -65,7 +68,7 @@ fn main() {
     }
 
     match ftype.as_str() {
-        "F" | "b" | "c" | "d" | "f" | "l" | "s" => { },
+        "F" | "b" | "c" | "d" | "f" | "l" | "s" => {}
         _ => {
             eprintln!("Error: Invalid type {}", ftype);
             std::process::exit(constants::STATUS_UNKNOWN);
@@ -77,7 +80,7 @@ fn main() {
         std::process::exit(constants::STATUS_UNKNOWN);
     }
 
-    let objs = opts.free.clone();
+    let objs = opts.free;
 
     if objs.is_empty() {
         eprintln!("Error: No objects to check");
@@ -98,7 +101,13 @@ fn main() {
             }
         };
 
-        check::metadata(obj, &meta, ftype.as_str(), mode as u32, &mut ok, &mut warning, &mut critical, report_critical);
+        let fsobj = fsobj::FSObj {
+            name: obj.to_string(),
+            meta,
+            requested_type: ftype.to_string(),
+            mode: mode as u32,
+        };
+        check::metadata(fsobj, &mut ok, &mut warning, &mut critical, report_critical);
     }
 
     if !critical.is_empty() {
@@ -116,6 +125,4 @@ fn main() {
 
     println!("Neither critical, warning nor ok set");
     std::process::exit(constants::STATUS_UNKNOWN);
-
 }
-

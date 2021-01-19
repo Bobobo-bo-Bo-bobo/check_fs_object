@@ -1,7 +1,8 @@
 use crate::constants;
 
 pub fn show_version() {
-    println!("{} version {}
+    println!(
+        "{} version {}
 Copyright (C) 2021 by Andreas Maus <maus@ypbind.de>
 This program comes with ABSOLUTELY NO WARRANTY.
 
@@ -12,7 +13,6 @@ Public License Version 3. (http://www.gnu.org/copyleft/gpl.html)
         constants::VERSION,
         constants::NAME
     );
-
 }
 
 pub fn show_usage() {
@@ -50,4 +50,3 @@ Example:
 
 ", constants::NAME, constants::NAME);
 }
-
