@@ -12,4 +12,3 @@ pub fn get_metadata(obj: &str, follow: bool) -> Result<std::fs::Metadata, Box<dy
 
     Ok(meta)
 }
-
