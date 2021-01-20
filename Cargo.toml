@@ -1,6 +1,6 @@
 [package]
 name = "check_fs_object"
-version = "0.1.0-20210119"
+version = "0.1.0"
 authors = ["Andreas Maus <maus@ypbind.de>"]
 edition = "2018"
 
